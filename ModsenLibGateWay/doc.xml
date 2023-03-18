@@ -1,0 +1,339 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ModsenLibGateWay</name>
+    </assembly>
+    <members>
+        <member name="T:ModsenLibGateWay.Controllers.AccountController">
+            <summary>
+            Account Controller
+            </summary>
+        </member>
+        <member name="M:ModsenLibGateWay.Controllers.AccountController.#ctor(AutoMapper.IMapper,ModsenLibGateWay.Helpers.JWTSha256,ModsenLibGateWay.Helpers.MD5,MediatR.IMediator,ModsenLibGateWay.Helpers.DataChecker)">
+            <summary>
+            Account Controller Ctor
+            </summary>
+        </member>
+        <member name="M:ModsenLibGateWay.Controllers.AccountController.Register(ModsenLibGateWay.Models.CustomerRegRequestModel)">
+            <summary>
+            Register User
+            </summary>
+            <param name="model CustomerRequestModelCustomerRequestModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ModsenLibGateWay.Controllers.AccountController.UserLoginPreview">
+            <summary>
+            UserLoginPreview
+            </summary>
+            <returns> UserDataModelResponse</returns>
+        </member>
+        <member name="M:ModsenLibGateWay.Controllers.AccountController.RemoveAccount(ModsenLibGateWay.Models.RemoveAccountRequest)">
+            <summary>
+            RemoveAccount
+            </summary>
+            <param name="model RemoveAccountRequestRemoveAccountRequest"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ModsenLibGateWay.Controllers.TokenController">
+            <summary>
+            Token Controller
+            </summary>
+        </member>
+        <member name="M:ModsenLibGateWay.Controllers.TokenController.#ctor(AutoMapper.IMapper,ModsenLibGateWay.Helpers.JWTSha256,ModsenLibGateWay.Helpers.MD5,MediatR.IMediator,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Token Controller Ctor
+            </summary>
+        </member>
+        <member name="M:ModsenLibGateWay.Controllers.TokenController.RemoveOldRefreshTokens">
+            <summary>
+            RemoveOldRefreshTokens
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ModsenLibGateWay.Controllers.TokenController.CreateJwtToken(ModsenLibGateWay.Models.LoginUserRequestModel)">
+            <summary>
+            Create JwtToken (Login)
+            </summary>
+            <param name="request LoginUserRequestModelLoginUserRequestModel"></param>
+            <returns>ErrorModel || TokenResponse</returns>
+        </member>
+        <member name="M:ModsenLibGateWay.Controllers.TokenController.RefreshToken(ModsenLibGateWay.Models.RefreshTokenRequestModel)">
+            <summary>
+            Refresh JwtToken
+            </summary>
+            <param name="request RefreshTokenRequestModelRefreshTokenRequestModel"></param>
+            <returns>ErrorModel || TokenResponse</returns>
+        </member>
+        <member name="M:ModsenLibGateWay.Controllers.TokenController.RevokeToken(ModsenLibGateWay.Models.RefreshTokenRequestModel)">
+            <summary>
+            Revoke Token Logout
+            </summary>
+            <param name="request RefreshTokenRequestModelRefreshTokenRequestModel"></param>
+            <returns>StatusCode</returns>
+        </member>
+        <member name="T:ModsenLibGateWay.Helpers.DataChecker">
+            <summary>
+            DataChecker Helper
+            </summary>
+        </member>
+        <member name="M:ModsenLibGateWay.Helpers.DataChecker.#ctor(AutoMapper.IMapper,ModsenLibGateWay.Helpers.JWTSha256,ModsenLibGateWay.Helpers.MD5,MediatR.IMediator)">
+            <summary>
+            DataChecker  Ctor
+            </summary>
+        </member>
+        <member name="M:ModsenLibGateWay.Helpers.DataChecker.CheckEmail(System.String,Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            CheckEmail by RegEx and Database
+            </summary>
+            <param name="email string?string?"></param>
+            <param name="context HttpContextHttpContext"></param>
+            <returns>TextResponse(Message, isMatched)</returns>
+        </member>
+        <member name="M:ModsenLibGateWay.Helpers.DataChecker.BirthDateCheck(System.Nullable{System.DateTime})">
+            <summary>
+            CheckEmail by RegEx and Database
+            </summary>
+            <param name="birthDate DateTime?DateTime? "></param>
+            <param name="isDependent bool?bool?"></param>
+             MatchResult = 0:  - incorrect or null
+             MatchResult = 1:  - OK
+             MatchResult = 2 : age less or equal 17
+            <returns>TextResponse(Message, isMatched,MatchResult)</returns>
+        </member>
+        <member name="T:ModsenLibGateWay.Helpers.JWTSha256">
+            <summary>
+            JWTSha256 Helper
+            </summary>
+        </member>
+        <member name="M:ModsenLibGateWay.Helpers.JWTSha256.#ctor(Microsoft.Extensions.Configuration.IConfiguration,MediatR.IMediator)">
+            <summary>
+            JWTSha256 Ctor
+            </summary>
+        </member>
+        <member name="M:ModsenLibGateWay.Helpers.JWTSha256.RemoveOldRefreshToken(System.Int32)">
+            <summary>
+            RemoveOldRefreshToken
+            </summary>
+            <param name="expHours intint "></param>
+            <returns></returns>
+        </member>
+        <member name="T:ModsenLibGateWay.Helpers.MD5">
+            <summary>
+            MD5 Encoding
+            </summary>
+        </member>
+        <member name="M:ModsenLibGateWay.Helpers.MD5.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            MD5 Ctor
+            </summary>
+        </member>
+        <member name="T:ModsenLibGateWay.MappingProfiles.CustomerRegRequestModelProfile">
+            <summary>
+            CustomerRegRequestModel Mapping to UserDto
+            </summary>
+        </member>
+        <member name="M:ModsenLibGateWay.MappingProfiles.CustomerRegRequestModelProfile.#ctor">
+            <summary>
+            CustomerRegRequestModel Profile Mapping to UserDto
+            </summary>
+        </member>
+        <member name="T:ModsenLibGateWay.MappingProfiles.RoleProfile">
+            <summary>
+            Roleprofile Mapping
+            </summary>
+        </member>
+        <member name="T:ModsenLibGateWay.MappingProfiles.UserProfile">
+            <summary>
+            UserProfile Mapping
+            </summary>
+        </member>
+        <member name="T:ModsenLibGateWay.Models.CustomerRegRequestModel">
+            <summary>
+            CustomerRequestModel Register model
+            </summary>
+        </member>
+        <member name="P:ModsenLibGateWay.Models.CustomerRegRequestModel.Email">
+            <summary>
+            string? Email 
+            </summary>
+        </member>
+        <member name="P:ModsenLibGateWay.Models.CustomerRegRequestModel.Keyword">
+            <summary>
+            string? Keyword
+            </summary>
+            
+        </member>
+        <member name="P:ModsenLibGateWay.Models.CustomerRegRequestModel.Password">
+            <summary>
+            string? Password
+            </summary>
+            
+        </member>
+        <member name="P:ModsenLibGateWay.Models.CustomerRegRequestModel.PhoneNumber">
+            <summary>
+            string? PhoneNumber 
+            </summary>
+        </member>
+        <member name="P:ModsenLibGateWay.Models.CustomerRegRequestModel.Name">
+            <summary>
+            string? Name
+            </summary>
+        </member>
+        <member name="P:ModsenLibGateWay.Models.CustomerRegRequestModel.Surname">
+            <summary>
+            string? Surname
+            </summary>
+        </member>
+        <member name="P:ModsenLibGateWay.Models.CustomerRegRequestModel.MidName">
+            <summary>
+            string? MidName
+            </summary>
+        </member>
+        <member name="P:ModsenLibGateWay.Models.CustomerRegRequestModel.BirthDate">
+            <summary>
+            DateTime? BirthDate
+            </summary>
+        </member>
+        <member name="P:ModsenLibGateWay.Models.CustomerRegRequestModel.Gender">
+            <summary>
+            string? Gender 
+            </summary>
+        </member>
+        <member name="P:ModsenLibGateWay.Models.CustomerRegRequestModel.Address">
+            <summary>
+            string? Address
+            </summary>
+        </member>
+        <member name="T:ModsenLibGateWay.Models.ErrorModel">
+            <summary>
+            Model for returning errors from api
+            </summary>
+        </member>
+        <member name="P:ModsenLibGateWay.Models.ErrorModel.Message">
+            <summary>
+            string? Error Message
+            </summary>
+        </member>
+        <member name="T:ModsenLibGateWay.Models.LoginUserRequestModel">
+            <summary>
+            LoginUserRequestModel
+            </summary>
+        </member>
+        <member name="P:ModsenLibGateWay.Models.LoginUserRequestModel.Email">
+            <summary>
+            string? Email
+            </summary>
+        </member>
+        <member name="P:ModsenLibGateWay.Models.LoginUserRequestModel.Password">
+            <summary>
+            string? Password
+            </summary>
+        </member>
+        <member name="T:ModsenLibGateWay.Models.RefreshTokenRequestModel">
+            <summary>
+            RefreshTokenModel
+            </summary>
+        </member>
+        <member name="P:ModsenLibGateWay.Models.RefreshTokenRequestModel.RefreshToken">
+            <summary>
+            Guid RefreshToken 
+            </summary>
+        </member>
+        <member name="T:ModsenLibGateWay.Models.RemoveAccountRequest">
+            <summary>
+            RemoveAccountRequest
+            </summary>
+        </member>
+        <member name="P:ModsenLibGateWay.Models.RemoveAccountRequest.Pwd">
+            
+        </member>
+        <member name="P:ModsenLibGateWay.Models.RemoveAccountRequest.Keyword">
+            
+        </member>
+        <member name="P:ModsenLibGateWay.Models.RemoveAccountRequest.SystemInfo">
+            
+        </member>
+        <member name="T:ModsenLibGateWay.Models.TextResponse">
+            <summary>
+            Model for returning text response from api
+            </summary>
+        </member>
+        <member name="P:ModsenLibGateWay.Models.TextResponse.Message">
+            <summary>
+            string? Response Message
+            </summary>
+        </member>
+        <member name="P:ModsenLibGateWay.Models.TextResponse.isMatched">
+            <summary>
+            bool? Response isMatched
+            to requirements
+            </summary>
+        </member>
+        <member name="P:ModsenLibGateWay.Models.TextResponse.MatchResult">
+            <summary>
+            int? Response MatchResult
+            to requirements
+            </summary>
+        </member>
+        <member name="T:ModsenLibGateWay.Models.TokenResponse">
+            <summary>
+            TokenResponse Model
+            </summary>
+        </member>
+        <member name="P:ModsenLibGateWay.Models.TokenResponse.AccessToken">
+            <summary>
+            string? AccessToken
+            </summary>
+        </member>
+        <member name="P:ModsenLibGateWay.Models.TokenResponse.Roles">
+            <summary>
+            string? []? Roles 
+            </summary>
+        </member>
+        <member name="P:ModsenLibGateWay.Models.TokenResponse.UserId">
+            <summary>
+             Guid UserId
+            </summary>
+        </member>
+        <member name="P:ModsenLibGateWay.Models.TokenResponse.TokenExpiration">
+            <summary>
+             DateTime TokenExpiration
+            </summary>
+        </member>
+        <member name="P:ModsenLibGateWay.Models.TokenResponse.RefreshToken">
+            <summary>
+            Guid RefreshToken
+            </summary>
+        </member>
+        <member name="T:ModsenLibGateWay.Models.UserDataModelResponse">
+            <summary>
+            UserDataModel for UserPreview
+            </summary>
+        </member>
+        <member name="P:ModsenLibGateWay.Models.UserDataModelResponse.ActiveFullName">
+            <summary>
+            Active User FullName
+            </summary>
+        </member>
+        <member name="P:ModsenLibGateWay.Models.UserDataModelResponse.ActiveEmail">
+            <summary>
+            Active User Email
+            </summary>
+        </member>
+        <member name="P:ModsenLibGateWay.Models.UserDataModelResponse.RoleNames">
+            <summary>
+            Main User RoleNames
+            </summary>
+        </member>
+        <member name="T:ModsenLibGateWay.Program">
+            <summary>
+            Program class
+            </summary>
+        </member>
+        <member name="M:ModsenLibGateWay.Program.Main(System.String[])">
+            <summary>
+            Main Program method
+            </summary>
+        </member>
+    </members>
+</doc>
