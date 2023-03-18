@@ -9,6 +9,9 @@ namespace ModsenLibGateWay.MappingProfiles
     /// </summary>
     public class RoleProfile : Profile
     {
+        /// <summary>
+        /// RoleProfile
+        /// </summary>
         public RoleProfile()
         {
             CreateMap<Role, RoleDto>();

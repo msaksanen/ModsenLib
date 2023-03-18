@@ -94,7 +94,6 @@
             CheckEmail by RegEx and Database
             </summary>
             <param name="birthDate DateTime?DateTime? "></param>
-            <param name="isDependent bool?bool?"></param>
              MatchResult = 0:  - incorrect or null
              MatchResult = 1:  - OK
              MatchResult = 2 : age less or equal 17
@@ -142,9 +141,19 @@
             Roleprofile Mapping
             </summary>
         </member>
+        <member name="M:ModsenLibGateWay.MappingProfiles.RoleProfile.#ctor">
+            <summary>
+            RoleProfile
+            </summary>
+        </member>
         <member name="T:ModsenLibGateWay.MappingProfiles.UserProfile">
             <summary>
             UserProfile Mapping
+            </summary>
+        </member>
+        <member name="M:ModsenLibGateWay.MappingProfiles.UserProfile.#ctor">
+            <summary>
+            UserProfile
             </summary>
         </member>
         <member name="T:ModsenLibGateWay.Models.CustomerRegRequestModel">

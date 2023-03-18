@@ -32,7 +32,7 @@ namespace ModsenLibGateWay
 
             builder.Host.UseSerilog((ctx, lc) =>
              lc.WriteTo.File(
-                 @"D:\Logs\modsenlibgate\webapi_data.log",
+                 @"D:\Logs\modsenlibgate\gateapi_data.log",
                  LogEventLevel.Information,
                   rollingInterval: RollingInterval.Day,
                   retainedFileCountLimit: null,
@@ -80,7 +80,6 @@ namespace ModsenLibGateWay
 
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             //builder.Services.AddMediatR(typeof(AddRefreshTokenCommand).Assembly);
-            //builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
             builder.Services.AddMediatR(x => x.RegisterServicesFromAssemblies(typeof(AddRefreshTokenCommand).Assembly));
             builder.Services.AddScoped<JWTSha256>();
             builder.Services.AddScoped<MD5>();
@@ -91,6 +90,7 @@ namespace ModsenLibGateWay
             app.UseStaticFiles();
             app.UseRouting();
             app.UseHttpsRedirection();
+
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -98,11 +98,8 @@ namespace ModsenLibGateWay
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
-
             app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.MapControllers();
 

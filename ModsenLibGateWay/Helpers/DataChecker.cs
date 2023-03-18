@@ -59,7 +59,6 @@ namespace ModsenLibGateWay.Helpers
         /// CheckEmail by RegEx and Database
         /// </summary>
         /// <param name="birthDate DateTime? "></param>
-        /// <param name="isDependent bool?"></param>
         ///  MatchResult = 0:  - incorrect or null
         ///  MatchResult = 1:  - OK
         ///  MatchResult = 2 : age less or equal 17

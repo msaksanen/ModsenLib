@@ -14,7 +14,7 @@ namespace ModsenLibGateWayCQS.Tokens.Queries
     {
         private readonly ModsenLibGateWayContext _context;
 
-        public GetRefreshTokenQueryHandler(ModsenLibGateWayContext context, IMapper mapper)
+        public GetRefreshTokenQueryHandler(ModsenLibGateWayContext context)
         {
             _context = context;
         }

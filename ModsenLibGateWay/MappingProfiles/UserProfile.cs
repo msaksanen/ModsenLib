@@ -9,6 +9,9 @@ namespace ModsenLibGateWay.MappingProfiles
     /// </summary>
     public class UserProfile : Profile
     {
+        /// <summary>
+        /// UserProfile
+        /// </summary>
         public UserProfile()
         {
             CreateMap<User, UserDto>();

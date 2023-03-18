@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ModsenLibAPI</name>
+    </assembly>
+    <members>
+        <member name="T:ModsenLibAPI.Controllers.BookController">
+            <summary>
+            Book Controller
+            </summary>
+        </member>
+        <member name="M:ModsenLibAPI.Controllers.BookController.#ctor(AutoMapper.IMapper,MediatR.IMediator,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Book Controller Ctor
+            </summary>
+        </member>
+        <member name="M:ModsenLibAPI.Controllers.BookController.GetBookList">
+            <summary>
+            Get book list
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ModsenLibAPI.Controllers.BookController.GetBookById(System.String)">
+            <summary>
+            Get book by Id
+            </summary>
+            <param name="id string? [FromQuery]string?[FromQuery]"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ModsenLibAPI.Controllers.BookController.GetBookByISBN(System.String)">
+            <summary>
+            Get book By ISBN
+            </summary>
+            <param name="isbn string? [FromQuery]string?[FromQuery]"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ModsenLibAPI.Controllers.BookController.AddNewBook(ModsenLibAPI.Models.AddBookRequestModel)">
+            <summary>
+            Add new book to the library
+            </summary>
+            <param name="model AddBookRequestModelAddBookRequestModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ModsenLibAPI.Controllers.BookController.RemoveBookById(ModsenLibAPI.Models.RemoveBookModel)">
+            <summary>
+            Remove a book by Id from the library
+            </summary>
+            <param name="model RemoveBookModelRemoveBookModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ModsenLibAPI.Controllers.BookController.BookEdit(ModsenLibAPI.Models.EditBookRequestModel)">
+            <summary>
+            Modifiy book's data
+            </summary>
+            <param name="model EditBookRequestModel [FromBody]EditBookRequestModel[FromBody] "></param>
+            <returns></returns>
+        </member>
+        <member name="T:ModsenLibAPI.MappingProfiles.BookProfile">
+            <summary>
+            BookProfile Mapping
+            </summary>
+        </member>
+        <member name="M:ModsenLibAPI.MappingProfiles.BookProfile.#ctor">
+            <summary>
+            BookProfile
+            </summary>
+        </member>
+        <member name="T:ModsenLibAPI.MappingProfiles.NewBookProfile">
+            <summary>
+            NewBookProfile Mapping
+            </summary>
+        </member>
+        <member name="M:ModsenLibAPI.MappingProfiles.NewBookProfile.#ctor">
+            <summary>
+            BookProfile
+            </summary>
+        </member>
+        <member name="T:ModsenLibAPI.Models.AddBookRequestModel">
+            <summary>
+            AddBookRequestModel
+            </summary>
+        </member>
+        <member name="P:ModsenLibAPI.Models.AddBookRequestModel.Title">
+            
+        </member>
+        <member name="P:ModsenLibAPI.Models.AddBookRequestModel.Author">
+            
+        </member>
+        <member name="P:ModsenLibAPI.Models.AddBookRequestModel.Description">
+            
+        </member>
+        <member name="P:ModsenLibAPI.Models.AddBookRequestModel.Genre">
+            
+        </member>
+        <member name="P:ModsenLibAPI.Models.AddBookRequestModel.ISBN">
+            
+        </member>
+        <member name="T:ModsenLibAPI.Models.EditBookRequestModel">
+            <summary>
+            EditBookRequestModel
+            </summary>
+        </member>
+        <member name="P:ModsenLibAPI.Models.EditBookRequestModel.Id">
+            
+        </member>
+        <member name="P:ModsenLibAPI.Models.EditBookRequestModel.Title">
+            
+        </member>
+        <member name="P:ModsenLibAPI.Models.EditBookRequestModel.Author">
+            
+        </member>
+        <member name="P:ModsenLibAPI.Models.EditBookRequestModel.Description">
+            
+        </member>
+        <member name="P:ModsenLibAPI.Models.EditBookRequestModel.Genre">
+            
+        </member>
+        <member name="P:ModsenLibAPI.Models.EditBookRequestModel.ISBN">
+            
+        </member>
+        <member name="T:ModsenLibAPI.Models.RemoveBookModel">
+            <summary>
+            RemoveBookModel
+            </summary>
+        </member>
+        <member name="P:ModsenLibAPI.Models.RemoveBookModel.Id">
+            
+        </member>
+        <member name="T:ModsenLibAPI.Program">
+            <summary>
+            Program class
+            </summary>
+        </member>
+        <member name="M:ModsenLibAPI.Program.Main(System.String[])">
+            <summary>
+            Main Program method
+            </summary>
+        </member>
+    </members>
+</doc>
