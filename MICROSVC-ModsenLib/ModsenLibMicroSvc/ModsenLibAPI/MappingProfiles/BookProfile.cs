@@ -19,6 +19,10 @@ namespace ModsenLibAPI.MappingProfiles
 
             CreateMap<BookDto, Book>().ReverseMap();
 
+            CreateMap<BookPassport, BookPassportDto>();
+
+            CreateMap<BookPassportDto, BookPassport>().ReverseMap();
+
             CreateMap<EditBookRequestModel, BookDto>();
         }
     }

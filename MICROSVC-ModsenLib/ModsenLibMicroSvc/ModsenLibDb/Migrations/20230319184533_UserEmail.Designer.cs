@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ModsenLibDb;
 
@@ -11,9 +12,11 @@ using ModsenLibDb;
 namespace ModsenLibDb.Migrations
 {
     [DbContext(typeof(ModsenLibAPIContext))]
-    partial class ModsenLibAPIContextModelSnapshot : ModelSnapshot
+    [Migration("20230319184533_UserEmail")]
+    partial class UserEmail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,31 +49,14 @@ namespace ModsenLibDb.Migrations
                     b.Property<bool?>("IsTaken")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Books");
-                });
-
-            modelBuilder.Entity("ModsenLibDb.Enitities.BookPassport", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("BookId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool?>("IsTaken")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime?>("ReturnDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("TakenDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserEmail")
                         .HasColumnType("nvarchar(max)");
@@ -80,25 +66,7 @@ namespace ModsenLibDb.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookId")
-                        .IsUnique()
-                        .HasFilter("[BookId] IS NOT NULL");
-
-                    b.ToTable("BookPassports");
-                });
-
-            modelBuilder.Entity("ModsenLibDb.Enitities.BookPassport", b =>
-                {
-                    b.HasOne("ModsenLibDb.Enitities.Book", "Book")
-                        .WithOne("BookPassport")
-                        .HasForeignKey("ModsenLibDb.Enitities.BookPassport", "BookId");
-
-                    b.Navigation("Book");
-                });
-
-            modelBuilder.Entity("ModsenLibDb.Enitities.Book", b =>
-                {
-                    b.Navigation("BookPassport");
+                    b.ToTable("Books");
                 });
 #pragma warning restore 612, 618
         }

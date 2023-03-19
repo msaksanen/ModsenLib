@@ -14,6 +14,7 @@ using System.Text.RegularExpressions;
 using ModsenLibAbstractions.DataTransferObjects;
 using ModsenLibCQS.Books.Commands;
 using ModsenLibAPI.Models;
+using System.Net;
 
 namespace ModsenLibAPI.Controllers
 {   /// <summary>
@@ -71,10 +72,36 @@ namespace ModsenLibAPI.Controllers
             {
                 return BadRequest(new { Message = "Book Id is invalid" });
             }
+            var headers = HttpContext.Request.Headers;
+            var resUserId = headers.TryGetValue("UserId", out var UserId);
+            var resUserEmail = headers.TryGetValue("UserEmail", out var UserEmail);
+            if (!resUserId && !resUserEmail)
+                return BadRequest(new { Message = "Unable read user Id & Email" });
+
+            var resUId = Guid.TryParse(UserId, out var UId);
+            if (!resUId)
+                return BadRequest(new { Message = "User Id is invalid" });
+
+            int BookPeriod = 7;
+            if (int.TryParse(_configuration["Lib:BookPeriod"], out int resb))
+                BookPeriod = resb;
             try
             {
-                var result = await _mediator.Send(new GetBookByIdQuery() { BookId = bookId });
-                return Ok(result);
+                var bookResult = await _mediator.Send(new GetBookByIdQuery() { BookId = bookId });
+                if (bookResult == null)
+                    return NotFound(new { Message = "Book is not found or has been taken" });
+
+                var takeRes = await _mediator.Send(new ChangeBookUserDataCommand()
+                { BookId = bookResult.Id, BookPeriod = BookPeriod, UserEmail = UserEmail, UserId = UId });
+                if (takeRes > 0)
+                    return Ok(new
+                    {
+                        bookResult,
+                        Message = "User data has been saved in the library",
+                        ReturnDate = $"{DateTime.Today.AddDays(BookPeriod)}"
+                    });
+                else
+                    return new ObjectResult(new { bookResult, Message = "User data has not been saved in the library" });
             }
 
             catch (Exception e)
@@ -100,6 +127,20 @@ namespace ModsenLibAPI.Controllers
             if (checkISBN == 1)
                 return BadRequest(new { Message = "Book ISBN  format is invalid" });
 
+            var headers = HttpContext.Request.Headers;
+            var resUserId = headers.TryGetValue("UserId", out var UserId);
+            var resUserEmail = headers.TryGetValue("UserEmail", out var UserEmail);
+            if (!resUserId && !resUserEmail)
+                return BadRequest(new { Message = "Unable read user Id & Email" });
+
+            var resUId = Guid.TryParse(UserId, out var UId);
+            if (!resUId)
+                return BadRequest(new { Message = "User Id is invalid" });
+
+            int BookPeriod = 7;
+            if (int.TryParse(_configuration["Lib:BookPeriod"], out int res))
+                BookPeriod = res;
+
             //var ISBN10 = _configuration["ISBN:ISBN10"];
             //var ISBN13 = _configuration["ISBN:ISBN13"];
             //if (ISBN10 == null && ISBN13==null)
@@ -110,8 +151,17 @@ namespace ModsenLibAPI.Controllers
 
             try
             {
-                var result = await _mediator.Send(new GetBookByISBNQuery() { BookISBN = isbn });
-                return Ok(result);
+                var bookResult = await _mediator.Send(new GetBookByISBNQuery() { BookISBN = isbn });
+                if (bookResult == null)
+                    return NotFound(new { Message = "Book is not found or has been taken" });
+
+                var takeRes = await _mediator.Send(new ChangeBookUserDataCommand() 
+                                    {BookId = bookResult.Id, BookPeriod = BookPeriod, UserEmail = UserEmail, UserId = UId});
+                if (takeRes>0)
+                    return Ok(new { bookResult, Message = "User data has been saved in the library", 
+                                    ReturnDate = $"{DateTime.Today.AddDays(BookPeriod)}" });
+                else
+                    return new ObjectResult(new { bookResult, Message= "User data has not been saved in the library" });
             }
 
             catch (Exception e)
@@ -132,13 +182,15 @@ namespace ModsenLibAPI.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(new { Message = "Book data is invalid" });
-            //int checkISBN = CheckISBN(model.ISBN);
 
-            //if (checkISBN == 0)
-            //    return BadRequest(new { Message = "Book ISBN is null or empty" });
+            var headers = HttpContext.Request.Headers;
+            var resRoles = headers.TryGetValue("UserRole", out var Roles);
+            if (!resRoles)
+                return BadRequest(new { Message = "Unable read user roles" });
 
-            //if (checkISBN == 1)
-            //    return BadRequest(new { Message = "Book ISBN  format is invalid" });
+            var isAdmin = Roles.ToString().Contains("Admin", StringComparison.OrdinalIgnoreCase);
+            if (!isAdmin)
+                return BadRequest(new { Message = "Book data addition is enabled for administrators only" });
 
             var newbook = _mapper.Map<BookDto>(model);
 
@@ -173,6 +225,15 @@ namespace ModsenLibAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(new { Message = "Book Id is invalid" });
 
+            var headers = HttpContext.Request.Headers;
+            var resRoles = headers.TryGetValue("UserRole", out var Roles);
+            if (!resRoles)
+                return BadRequest(new { Message = "Unable read user roles" });
+
+            var isAdmin = Roles.ToString().Contains("Admin", StringComparison.OrdinalIgnoreCase);
+            if (!isAdmin)
+                return BadRequest(new { Message = "Book data removal is enabled for administrators only" });
+
             try
             {
                 var result = await _mediator.Send(new RemoveBookCommand() { BookId = model.Id });
@@ -204,13 +265,14 @@ namespace ModsenLibAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(new { Message = "Book data is invalid" });
 
-            //int checkISBN = CheckISBN(model.ISBN);
+            var headers = HttpContext.Request.Headers;
+            var resRoles = headers.TryGetValue("UserRole", out var Roles);
+            if (!resRoles)
+                return BadRequest(new { Message = "Unable read user roles" });
 
-            //if (checkISBN == 0)
-            //    return BadRequest(new { Message = "Book ISBN is null or empty" });
-
-            //if (checkISBN == 1)
-            //    return BadRequest(new { Message = "Book ISBN  format is invalid" });
+            var isAdmin = Roles.ToString().Contains("Admin", StringComparison.OrdinalIgnoreCase);
+            if (!isAdmin)
+                return BadRequest(new { Message = "Book data editing is enabled for administrators only" });
 
             var modBook = _mapper.Map<BookDto>(model);
 
@@ -247,5 +309,6 @@ namespace ModsenLibAPI.Controllers
             else
                 return 1; //failed check
         }
+
     }
 }

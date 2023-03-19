@@ -11,6 +11,7 @@ namespace ModsenLibDb
     public class ModsenLibAPIContext : DbContext
     {
         public DbSet<Book>? Books { get; set; }
+        public DbSet<BookPassport>? BookPassports { get; set; }
 
         public ModsenLibAPIContext(DbContextOptions<ModsenLibAPIContext> options)
          : base(options)

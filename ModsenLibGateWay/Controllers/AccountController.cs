@@ -95,7 +95,7 @@ namespace ModsenLibGateWay.Controllers
         /// </summary>
         /// <returns> UserDataModelResponse</returns>
         [HttpGet]
-        [Authorize]
+        [Authorize (AuthenticationSchemes = "jwt_auth_scheme")]
         public async Task<IActionResult> UserLoginPreview()
         {
             if (User.Identities.Any(identity => identity.IsAuthenticated))
@@ -148,7 +148,7 @@ namespace ModsenLibGateWay.Controllers
         /// <param name="model RemoveAccountRequest"></param>
         /// <returns></returns>
         [HttpPost]
-        [Authorize]
+        [Authorize (AuthenticationSchemes = "jwt_auth_scheme")]
         public async Task<IActionResult> RemoveAccount(RemoveAccountRequest model)
         {
             if (User.Identities.Any(identity => identity.IsAuthenticated) &&

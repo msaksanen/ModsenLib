@@ -43,7 +43,7 @@ namespace ModsenLibGateWay.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(AuthenticationSchemes = "jwt_auth_scheme", Roles = "Admin")]
         public async Task<IActionResult> RemoveOldRefreshTokens()
         {
             bool result = int.TryParse(_configuration["RefreshToken:ExpiryHours"], out var exp);

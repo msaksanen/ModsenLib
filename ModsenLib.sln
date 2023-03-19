@@ -15,13 +15,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "APIGateway", "APIGateway", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ModsenLibMicroSvc", "ModsenLibMicroSvc", "{A515DA9E-5586-406B-9DA7-90D746F44BBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModsenLibAPI", "MICROSVC-ModsenLib\ModsenLibMicroSvc\ModsenLibAPI\ModsenLibAPI.csproj", "{3BA8ADEC-ABA9-4173-ADE9-0B1CA9137924}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenLibAPI", "MICROSVC-ModsenLib\ModsenLibMicroSvc\ModsenLibAPI\ModsenLibAPI.csproj", "{3BA8ADEC-ABA9-4173-ADE9-0B1CA9137924}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModsenLibDb", "MICROSVC-ModsenLib\ModsenLibMicroSvc\ModsenLibDb\ModsenLibDb.csproj", "{5A3184F3-2B21-43D3-B26A-1B43F175538B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenLibDb", "MICROSVC-ModsenLib\ModsenLibMicroSvc\ModsenLibDb\ModsenLibDb.csproj", "{5A3184F3-2B21-43D3-B26A-1B43F175538B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModsenLibAbstractions", "MICROSVC-ModsenLib\ModsenLibMicroSvc\ModsenLibAbstractions\ModsenLibAbstractions.csproj", "{F60208B6-FE1C-41B6-9E2F-4BC24625E9AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenLibAbstractions", "MICROSVC-ModsenLib\ModsenLibMicroSvc\ModsenLibAbstractions\ModsenLibAbstractions.csproj", "{F60208B6-FE1C-41B6-9E2F-4BC24625E9AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModsenLibCQS", "MICROSVC-ModsenLib\ModsenLibMicroSvc\ModsenLibCQS\ModsenLibCQS.csproj", "{852221D3-9412-4B33-A117-0EFD28144F35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModsenLibCQS", "MICROSVC-ModsenLib\ModsenLibMicroSvc\ModsenLibCQS\ModsenLibCQS.csproj", "{852221D3-9412-4B33-A117-0EFD28144F35}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

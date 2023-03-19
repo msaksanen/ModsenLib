@@ -22,7 +22,16 @@
           "Host": "localhost",
           "Port": 7220
         }
-      ]
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "jwt_auth_scheme",
+        "AllowedScopes": []
+      },
+      "AddHeadersToRequest": {
+        "UserId": "Claims[jti] > value > |",
+        "UserRole": "Claims[http://schemas.microsoft.com/ws/2008/06/identity/claims/role] > value > |",
+        "UserEmail": "Claims[http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress] > value > |"
+      }
     },
     {
       "UpstreamPathTemplate": "/gateway/libapi/GetBookByISBN?isbn={isbn}",
@@ -34,7 +43,16 @@
           "Host": "localhost",
           "Port": 7220
         }
-      ]
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "jwt_auth_scheme",
+        "AllowedScopes": []
+      },
+      "AddHeadersToRequest": {
+        "UserId": "Claims[jti] > value > |",
+        "UserRole": "Claims[http://schemas.microsoft.com/ws/2008/06/identity/claims/role] > value > |",
+        "UserEmail": "Claims[http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress] > value > |"
+      }
     },
     {
       "UpstreamPathTemplate": "/gateway/libapi/BookEdit",
@@ -46,7 +64,16 @@
           "Host": "localhost",
           "Port": 7220
         }
-      ]
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "jwt_auth_scheme",
+        "AllowedScopes": []
+      },
+      "AddHeadersToRequest": {
+        "UserId": "Claims[jti] > value > |",
+        "UserRole": "Claims[http://schemas.microsoft.com/ws/2008/06/identity/claims/role] > value > |",
+        "UserEmail": "Claims[http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress] > value > |"
+      }
     },
     {
       "UpstreamPathTemplate": "/gateway/libapi/AddNewBook",
@@ -58,7 +85,16 @@
           "Host": "localhost",
           "Port": 7220
         }
-      ]
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "jwt_auth_scheme",
+        "AllowedScopes": []
+      },
+      "AddHeadersToRequest": {
+        "UserId": "Claims[jti] > value > |",
+        "UserRole": "Claims[http://schemas.microsoft.com/ws/2008/06/identity/claims/role] > value > |",
+        "UserEmail": "Claims[http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress] > value > |"
+      }
     },
     {
       "UpstreamPathTemplate": "/gateway/libapi/RemoveBookById",
@@ -70,7 +106,16 @@
           "Host": "localhost",
           "Port": 7220
         }
-      ]
+      ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "jwt_auth_scheme",
+        "AllowedScopes": []
+      },
+      "AddHeadersToRequest": {
+        "UserId": "Claims[jti] > value > |",
+        "UserRole": "Claims[http://schemas.microsoft.com/ws/2008/06/identity/claims/role] > value > |",
+        "UserEmail": "Claims[http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress] > value > |"
+      }
     }
   ],
   "GlobalConfiguration": {

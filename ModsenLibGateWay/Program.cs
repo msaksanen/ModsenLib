@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using ModsenLibGateWay.Helpers;
@@ -10,6 +11,7 @@ using ModsenLibGateWayCQS.Users.Queries;
 using ModsenLibGateWayDb;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using Ocelot.Values;
 using Serilog;
 using Serilog.Events;
 using System.Reflection;
@@ -83,6 +85,8 @@ namespace ModsenLibGateWay
                   };
               });
 
+            builder.Services.AddAuthentication("jwt_auth_scheme");
+
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             //builder.Services.AddMediatR(typeof(AddRefreshTokenCommand).Assembly);
             builder.Services.AddMediatR(x => x.RegisterServicesFromAssemblies(typeof(AddRefreshTokenCommand).Assembly));
@@ -106,8 +110,11 @@ namespace ModsenLibGateWay
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.MapControllers();
-            //app.UseOcelot();
+            //app.MapControllers();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
             app.UseOcelot().Wait();
 
             app.Run();
