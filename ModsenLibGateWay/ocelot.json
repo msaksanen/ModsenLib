@@ -1,0 +1,80 @@
+{
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/gateway/libapi/GetBookList",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/book/GetBookList",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7220
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/libapi/GetBookByid?id={id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/book/GetBookByid?id={id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7220
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/libapi/GetBookByISBN?isbn={isbn}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "DownstreamPathTemplate": "/api/book/GetBookByISBN?isbn={isbn}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7220
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/libapi/BookEdit",
+      "UpstreamHttpMethod": [ "PATCH" ],
+      "DownstreamPathTemplate": "/api/book/BookEdit",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7220
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/libapi/AddNewBook",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DownstreamPathTemplate": "/api/book/AddNewBook",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7220
+        }
+      ]
+    },
+    {
+      "UpstreamPathTemplate": "/gateway/libapi/RemoveBookById",
+      "UpstreamHttpMethod": [ "DELETE" ],
+      "DownstreamPathTemplate": "/api/book/RemoveBookById",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7220
+        }
+      ]
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:7283"
+
+  }
+}

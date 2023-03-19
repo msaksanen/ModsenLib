@@ -8,6 +8,8 @@ using ModsenLibGateWayCQS.Tokens.Commands;
 using ModsenLibGateWayCQS.Users.Commands;
 using ModsenLibGateWayCQS.Users.Queries;
 using ModsenLibGateWayDb;
+using Ocelot.DependencyInjection;
+using Ocelot.Middleware;
 using Serilog;
 using Serilog.Events;
 using System.Reflection;
@@ -57,6 +59,9 @@ namespace ModsenLibGateWay
                 options.IncludeXmlComments(builder.Configuration["XmlDoc"]);
             });
 
+            builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
+            builder.Services.AddOcelot(builder.Configuration);
+
             builder.Services
               .AddAuthentication(options =>
               {
@@ -64,7 +69,7 @@ namespace ModsenLibGateWay
                   options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                   options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
               })
-              .AddJwtBearer(opt =>
+              .AddJwtBearer("jwt_auth_scheme", opt =>
               {
                   opt.RequireHttpsMetadata = false;
                   opt.SaveToken = true;
@@ -102,6 +107,8 @@ namespace ModsenLibGateWay
             app.UseAuthorization();
 
             app.MapControllers();
+            //app.UseOcelot();
+            app.UseOcelot().Wait();
 
             app.Run();
         }
