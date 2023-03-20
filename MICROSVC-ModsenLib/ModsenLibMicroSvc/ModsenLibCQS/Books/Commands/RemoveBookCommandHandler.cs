@@ -26,7 +26,7 @@ namespace ModsenLibCQS.Books.Commands
         {
             if (_context.Books != null && _context.Books.Any())
             {
-                var entity = await _context.Books.AsNoTracking()
+                var entity = await _context.Books
                             .FirstOrDefaultAsync(entity => entity.Id.Equals(cmd.BookId), cts);
 
                 if (entity == null) return null;

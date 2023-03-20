@@ -36,7 +36,7 @@ namespace ModsenLibCQS.Books.Commands
                         BookId = cmd.BookId,
                         UserId = cmd.UserId,
                         UserEmail = cmd.UserEmail,
-                        ReturnDate = DateTime.Today.AddDays(cmd.BookPeriod),
+                        ReturnDate = cmd.ReturnDate,
                         TakenDate = DateTime.Today,
                         IsTaken = true
                     };
@@ -47,8 +47,8 @@ namespace ModsenLibCQS.Books.Commands
                     entity.BookId = cmd.BookId;
                     entity.UserId = cmd.UserId;
                     entity.UserEmail = cmd.UserEmail;
-                    entity.ReturnDate = DateTime.Today.AddDays(cmd.BookPeriod);
-                    entity.TakenDate = DateTime.Today.AddDays(cmd.BookPeriod);
+                    entity.ReturnDate = cmd.ReturnDate;
+                    entity.TakenDate = DateTime.Today;
                     entity.IsTaken = true;
                     _context.BookPassports.Update(entity);
                 }

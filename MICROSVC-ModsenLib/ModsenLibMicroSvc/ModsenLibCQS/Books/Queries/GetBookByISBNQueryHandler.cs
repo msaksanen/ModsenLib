@@ -26,15 +26,16 @@ namespace ModsenLibCQS.Books.Queries
         CancellationToken cts)
 
         {
-            if (_context.Books != null && _context.Books.Any() &&_context.BookPassports!=null)
+            if (_context.Books != null && _context.Books.Any() && _context.BookPassports!=null)
             {
                 var entity = await _context.Books
                              .AsNoTracking()
                              .Include(b => b.BookPassport)
-                             .FirstOrDefaultAsync(entity => entity.ISBN!=null && entity.ISBN.Equals(request.BookISBN) &&
-                                                            entity.BookPassport!=null && entity.BookPassport.IsTaken==true);
+                             .FirstOrDefaultAsync(entity => entity.ISBN != null &&
+                                 entity.ISBN.Equals(request.BookISBN), cts);
 
                 if (entity == null) return null;
+                if (entity.BookPassport != null && entity.BookPassport.IsTaken == true) return null;
 
                 var dto = _mapper.Map<BookDto>(entity);
                 return dto;

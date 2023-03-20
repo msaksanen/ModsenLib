@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ModsenLibCQS.Books.Queries
 {
-    public class GetBookListQuery : IRequest<IEnumerable<BookDto>?>
+    public class GetBookListQuery : IRequest<List<BookDto>?>
     {
     }
 }

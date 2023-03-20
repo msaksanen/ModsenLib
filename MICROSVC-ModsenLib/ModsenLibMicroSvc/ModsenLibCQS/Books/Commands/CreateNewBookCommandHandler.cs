@@ -23,12 +23,23 @@ namespace ModsenLibCQS.Books.Commands
 
         public async Task<int?> Handle(CreateNewBookCommand cmd, CancellationToken cts)
         {
-            if (_context.Books != null)
+            if (_context.Books != null && _context.BookPassports!=null)
             {
                 var entity = _mapper.Map<Book>(cmd.BookDto);
 
                 if (entity != null)
+                {
                     await _context.Books.AddAsync(entity, cts);
+                    var bookPass = new BookPassport()
+                    {
+                        Id = Guid.NewGuid(),
+                        BookId = entity.Id,
+                        Book = entity,
+                        IsTaken = false
+                    };
+                    await _context.BookPassports.AddAsync(bookPass, cts);
+                }
+
             }
             var res = await _context.SaveChangesAsync(cts);
             return res;

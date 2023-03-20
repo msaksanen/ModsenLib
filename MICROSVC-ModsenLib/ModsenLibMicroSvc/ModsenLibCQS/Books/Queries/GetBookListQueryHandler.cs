@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ModsenLibCQS.Books.Queries
 {
-    public class GetBookListQueryHandler : IRequestHandler<GetBookListQuery, IEnumerable<BookDto>?>
+    public class GetBookListQueryHandler : IRequestHandler<GetBookListQuery, List<BookDto>?>
     {
         private readonly ModsenLibAPIContext _context;
         private readonly IMapper _mapper;
@@ -21,11 +21,13 @@ namespace ModsenLibCQS.Books.Queries
             _context = context;
             _mapper = mapper;
         }
-        public async Task<IEnumerable<BookDto>?> Handle(GetBookListQuery query, CancellationToken cts)
+        public async Task<List<BookDto>?> Handle(GetBookListQuery query, CancellationToken cts)
         {
-            if (_context.Books != null && _context.Books.Any())
+            if (_context.Books != null && _context.Books.Any() && _context.BookPassports!=null)
             {
                 var list = await _context.Books
+                                 .AsNoTracking()
+                                 .Include(b=> b.BookPassport)
                                  .Select(b => _mapper.Map<BookDto>(b))
                                  .ToListAsync(cts);
                 return list;

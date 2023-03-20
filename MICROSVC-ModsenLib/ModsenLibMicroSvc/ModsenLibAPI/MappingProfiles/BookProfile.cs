@@ -15,7 +15,9 @@ namespace ModsenLibAPI.MappingProfiles
         /// </summary>
         public BookProfile()
         {
-            CreateMap<Book, BookDto>();
+            CreateMap<Book, BookDto>()
+                .ForMember(d => d.IsTaken,
+                 opt => opt.MapFrom(b =>(b.BookPassport!=null) ? b.BookPassport.IsTaken : false));
 
             CreateMap<BookDto, Book>().ReverseMap();
 

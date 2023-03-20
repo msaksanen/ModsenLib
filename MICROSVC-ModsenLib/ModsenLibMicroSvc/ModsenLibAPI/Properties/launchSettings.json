@@ -12,9 +12,9 @@
     "ModsenLibAPI": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": false,
-      //"launchBrowser": true,
-      //"launchUrl": "swagger", 
+      //"launchBrowser": false,
+      "launchBrowser": true,
+      "launchUrl": "swagger", 
       "applicationUrl": "http://localhost:7220",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

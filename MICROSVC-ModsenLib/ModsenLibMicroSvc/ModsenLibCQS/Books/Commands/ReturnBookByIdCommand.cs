@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using ModsenLibAbstractions.DataTransferObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +8,9 @@ using System.Threading.Tasks;
 
 namespace ModsenLibCQS.Books.Commands
 {
-    public class ChangeBookUserDataCommand : IRequest<int?>
+    public class ReturnBookByIdCommand : IRequest<Result?>
     {
         public Guid? BookId { get; set; }
         public Guid? UserId { get; set; }
-        public string? UserEmail { get; set; }
-        public DateTime? ReturnDate { get; set; }
     }
 }

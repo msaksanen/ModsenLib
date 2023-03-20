@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using ModsenLibDb;
 using ModsenLibDb.Enitities;
 using System;
@@ -24,9 +25,14 @@ namespace ModsenLibCQS.Books.Commands
         public async Task<int?> Handle(BookEditCommand cmd, CancellationToken cts)
         {
             if (_context.Books != null && _context.Books.Any())
-            {
-                var entity = _mapper.Map<Book>(cmd.BookDto);
+            {  
+                var oldEnt = await _context.Books
+                                    .AsNoTracking()
+                                    .FirstOrDefaultAsync(b => b.Id.Equals(cmd.BookDto!.Id), cts);
 
+                if (oldEnt == null) return 0;
+
+                var entity = _mapper.Map<Book>(cmd.BookDto);
                 if (entity != null)
                     _context.Books.Update(entity);
             }

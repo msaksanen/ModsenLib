@@ -15,6 +15,7 @@ using ModsenLibAbstractions.DataTransferObjects;
 using ModsenLibCQS.Books.Commands;
 using ModsenLibAPI.Models;
 using System.Net;
+using System.Diagnostics;
 
 namespace ModsenLibAPI.Controllers
 {   /// <summary>
@@ -48,6 +49,9 @@ namespace ModsenLibAPI.Controllers
             try
             {
                 var result = await _mediator.Send(new GetBookListQuery() { });
+                if (result == null || !result.Any())
+                    return NotFound();
+                result.ForEach(b => b.BookPassportDto = null); //open method, passport contains confidential data
                 return Ok(result);
             }
 
@@ -60,18 +64,105 @@ namespace ModsenLibAPI.Controllers
         }
 
         /// <summary>
-        /// Get book by Id
+        /// Return book by Id
         /// </summary>
         /// <param name="id string? [FromQuery]"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetBookById([FromQuery] string? id)
+        public async Task<IActionResult> ReturnBookById([FromQuery] string? id)
         {
-            var res = Guid.TryParse(id, out var bookId);
-            if (!res)
+            if (string.IsNullOrWhiteSpace(id))
+                return BadRequest(new { Message = "Book Id is null, empty or whitespace" });
+
+            var headers = HttpContext.Request.Headers;
+            var resUserId = headers.TryGetValue("UserId", out var UserId);
+            var resUserEmail = headers.TryGetValue("UserEmail", out var UserEmail);
+            if (!resUserId && !resUserEmail)
+                return BadRequest(new { Message = "Unable read user Id & Email" });
+
+            var resUId = Guid.TryParse(UserId, out var UId);
+            if (!resUId)
+                return BadRequest(new { Message = "User Id is invalid" });
+
+            Guid bookId = Guid.Empty;
+            var resCmd = new Result();
+
+            try
             {
-                return BadRequest(new { Message = "Book Id is invalid" });
+                    var res = Guid.TryParse(id, out bookId);
+                    if (!res)
+                    {
+                        return BadRequest(new { Message = "Book Id is invalid" });
+                    }
+                    else
+                    {
+                        resCmd = await _mediator.Send(new ReturnBookByIdCommand() { BookId = bookId, UserId = UId});
+                    }
+
+                if (resCmd == null)
+                    return NotFound(new { Message = "Book or Dbase is not found" });
+
+                if (resCmd.IntResult==0)
+                    return new ObjectResult(new {Message = "Nobody has taken the book" });
+
+                if (resCmd.IntResult == 1)
+                    return new ObjectResult(new { Message = "The user hasn't taken the book" });
+
+                if (resCmd.IntResult == 2)
+                    return new ObjectResult(new { Message = "The user has returned the book already" });
+
+                if (resCmd.IntResult == 3 && resCmd.SaveChangesResult>0)
+                    return new ObjectResult(new 
+                    { 
+                        Message = "The user has returned the book in time",
+                        SysInfo = "Data has been modified successfully"
+                    });
+
+                if (resCmd.IntResult == 3 && resCmd.SaveChangesResult < 0)
+                    return new ObjectResult(new
+                    {
+                        Message = "The user has returned the book in time",
+                        SysInfo = "Data has not been modified successfully"
+                    });
+
+                if (resCmd.IntResult == 4 && resCmd.SaveChangesResult > 0)
+                    return new ObjectResult(new
+                    {
+                        Message = "The user has returned the book late",
+                        SysInfo = "Data has been modified successfully"
+                    });
+
+                if (resCmd.IntResult == 4 && resCmd.SaveChangesResult < 0)
+                    return new ObjectResult(new
+                    {
+                        Message = "The user has returned the book late",
+                        SysInfo = "Data has not been modified successfully"
+                    });
+                return BadRequest(new { Message = "Something went wrong" });
             }
+
+            catch (Exception e)
+            {
+                Log.Error($"{e.Message}. {Environment.NewLine} {e.StackTrace}");
+                return BadRequest();
+            }
+
+        }
+
+        /// <summary>
+        /// Get book by Id or ISBN
+        /// </summary>
+        /// <param name="id string? [FromQuery]"></param>
+        /// <param name="isbn string? [FromQuery]"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> GetBookByIdISBN([FromQuery] string? id, string? isbn)
+        {
+            if (string.IsNullOrWhiteSpace(id) && string.IsNullOrWhiteSpace(isbn))
+                return BadRequest(new { Message = "Book Id/ISBN is null, empty or whitespace" });
+            if (!string.IsNullOrWhiteSpace(id) && !string.IsNullOrWhiteSpace(isbn))
+                return BadRequest(new { Message = "Unable to proceed. Input either Id or ISBN"});
+
             var headers = HttpContext.Request.Headers;
             var resUserId = headers.TryGetValue("UserId", out var UserId);
             var resUserEmail = headers.TryGetValue("UserEmail", out var UserEmail);
@@ -85,20 +176,49 @@ namespace ModsenLibAPI.Controllers
             int BookPeriod = 7;
             if (int.TryParse(_configuration["Lib:BookPeriod"], out int resb))
                 BookPeriod = resb;
+
+            Guid bookId = Guid.Empty;
+            var bookResult = new BookDto();
+
             try
             {
-                var bookResult = await _mediator.Send(new GetBookByIdQuery() { BookId = bookId });
-                if (bookResult == null)
+                if (!string.IsNullOrWhiteSpace(id))
+                {
+                    var res = Guid.TryParse(id, out bookId);
+                    if (!res)
+                    {
+                        return BadRequest(new { Message = "Book Id is invalid" });
+                    }
+                    else
+                    {
+                        bookResult = await _mediator.Send(new GetBookByIdQuery() { BookId = bookId });
+                    }
+                }
+               if (!string.IsNullOrWhiteSpace(isbn))
+               {
+                    int checkISBN = CheckISBN(isbn);
+                    if (checkISBN == 1)
+                    {
+                        return BadRequest(new { Message = "Book ISBN  format is invalid" });
+                    }
+                    else
+                    {
+                        bookResult = await _mediator.Send(new GetBookByISBNQuery() { BookISBN = isbn });
+                    }
+               }
+
+               if (bookResult == null)
                     return NotFound(new { Message = "Book is not found or has been taken" });
 
+                var returnDate = DateTime.Today.AddDays(BookPeriod);
                 var takeRes = await _mediator.Send(new ChangeBookUserDataCommand()
-                { BookId = bookResult.Id, BookPeriod = BookPeriod, UserEmail = UserEmail, UserId = UId });
+                { BookId = bookResult.Id, UserEmail = UserEmail, UserId = UId , ReturnDate = returnDate });
                 if (takeRes > 0)
                     return Ok(new
                     {
                         bookResult,
                         Message = "User data has been saved in the library",
-                        ReturnDate = $"{DateTime.Today.AddDays(BookPeriod)}"
+                        ReturnDate = $"{returnDate}"
                     });
                 else
                     return new ObjectResult(new { bookResult, Message = "User data has not been saved in the library" });
@@ -111,66 +231,7 @@ namespace ModsenLibAPI.Controllers
             }
 
         }
-        /// <summary>
-        /// Get book By ISBN
-        /// </summary>
-        /// <param name="isbn string? [FromQuery]"></param>
-        /// <returns></returns>
-        [HttpGet]
-        public async Task<IActionResult> GetBookByISBN([FromQuery] string? isbn)
-        {
-            int checkISBN = CheckISBN(isbn);
-
-            if (checkISBN == 0)
-                return BadRequest(new { Message = "Book ISBN is null or empty" });
-
-            if (checkISBN == 1)
-                return BadRequest(new { Message = "Book ISBN  format is invalid" });
-
-            var headers = HttpContext.Request.Headers;
-            var resUserId = headers.TryGetValue("UserId", out var UserId);
-            var resUserEmail = headers.TryGetValue("UserEmail", out var UserEmail);
-            if (!resUserId && !resUserEmail)
-                return BadRequest(new { Message = "Unable read user Id & Email" });
-
-            var resUId = Guid.TryParse(UserId, out var UId);
-            if (!resUId)
-                return BadRequest(new { Message = "User Id is invalid" });
-
-            int BookPeriod = 7;
-            if (int.TryParse(_configuration["Lib:BookPeriod"], out int res))
-                BookPeriod = res;
-
-            //var ISBN10 = _configuration["ISBN:ISBN10"];
-            //var ISBN13 = _configuration["ISBN:ISBN13"];
-            //if (ISBN10 == null && ISBN13==null)
-            //    return BadRequest(new { Message = "No ISBN pattern is provided" });
-
-            //if (!(Regex.IsMatch(isbn, ISBN10!, RegexOptions.IgnoreCase) || (Regex.IsMatch(isbn, ISBN13!, RegexOptions.IgnoreCase))))
-            //    return BadRequest(new { Message = "Book ISBN is invalid" });
-
-            try
-            {
-                var bookResult = await _mediator.Send(new GetBookByISBNQuery() { BookISBN = isbn });
-                if (bookResult == null)
-                    return NotFound(new { Message = "Book is not found or has been taken" });
-
-                var takeRes = await _mediator.Send(new ChangeBookUserDataCommand() 
-                                    {BookId = bookResult.Id, BookPeriod = BookPeriod, UserEmail = UserEmail, UserId = UId});
-                if (takeRes>0)
-                    return Ok(new { bookResult, Message = "User data has been saved in the library", 
-                                    ReturnDate = $"{DateTime.Today.AddDays(BookPeriod)}" });
-                else
-                    return new ObjectResult(new { bookResult, Message= "User data has not been saved in the library" });
-            }
-
-            catch (Exception e)
-            {
-                Log.Error($"{e.Message}. {Environment.NewLine} {e.StackTrace}");
-                return BadRequest();
-            }
-
-        }
+       
 
         /// <summary>
         /// Add new book to the library
@@ -301,7 +362,7 @@ namespace ModsenLibAPI.Controllers
             Regex regexISBN10 = new Regex(@"\d{1,5}-\d{1,8}-\d{1,6}-[0-9]");          // 2-266-11156-6 
             Regex regexISBN13 = new Regex(@"\d{1,3}-\d{1,5}-\d{1,8}-\d{1,6}-[0-9]");  // 978-2-266-11156-6 
 
-            if (string.IsNullOrEmpty(isbn) || string.IsNullOrWhiteSpace(isbn))
+            if (string.IsNullOrWhiteSpace(isbn))
                 return 0;
 
             if(regexISBN10.IsMatch(isbn) || regexISBN13.IsMatch(isbn))

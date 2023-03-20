@@ -16,5 +16,6 @@ namespace ModsenLibAbstractions.DataTransferObjects
         public string? Genre { get; set; }
         public string? ISBN { get; set; }
         public DateTime? CreationDate { get; set; }
+        public bool? IsTaken { get; set; }
     }
 }

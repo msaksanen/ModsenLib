@@ -17,5 +17,12 @@ namespace ModsenLibDb
          : base(options)
         {
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<BookPassport>()
+                .HasOne(bp => bp.Book)
+                .WithOne(b => b.BookPassport)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
     }
 }

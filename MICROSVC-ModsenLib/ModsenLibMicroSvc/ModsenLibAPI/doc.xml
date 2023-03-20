@@ -20,17 +20,18 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ModsenLibAPI.Controllers.BookController.GetBookById(System.String)">
+        <member name="M:ModsenLibAPI.Controllers.BookController.ReturnBookById(System.String)">
             <summary>
-            Get book by Id
+            Return book by Id
             </summary>
             <param name="id string? [FromQuery]string?[FromQuery]"></param>
             <returns></returns>
         </member>
-        <member name="M:ModsenLibAPI.Controllers.BookController.GetBookByISBN(System.String)">
+        <member name="M:ModsenLibAPI.Controllers.BookController.GetBookByIdISBN(System.String,System.String)">
             <summary>
-            Get book By ISBN
+            Get book by Id or ISBN
             </summary>
+            <param name="id string? [FromQuery]string?[FromQuery]"></param>
             <param name="isbn string? [FromQuery]string?[FromQuery]"></param>
             <returns></returns>
         </member>
